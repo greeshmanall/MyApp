@@ -1,0 +1,103 @@
+{
+  "skus": [
+    {
+      "id": "aws-p5-h100x8-us-east-1",
+      "provider": "aws",
+      "displayName": "AWS p5.48xlarge (H100 x8)",
+      "gpuModel": "H100",
+      "gpuCount": 8,
+      "region": "us-east-1",
+      "hourlyUsd": 98.32,
+      "fp16TflopsPerGpu": 1979,
+      "notes": "On-demand reference for p5 family."
+    },
+    {
+      "id": "aws-p4d-a100x8-us-east-1",
+      "provider": "aws",
+      "displayName": "AWS p4d.24xlarge (A100 40GB x8)",
+      "gpuModel": "A100",
+      "gpuCount": 8,
+      "region": "us-east-1",
+      "hourlyUsd": 32.77,
+      "fp16TflopsPerGpu": 312,
+      "notes": "On-demand reference for p4d family."
+    },
+    {
+      "id": "gcp-a3-h100x8-us-central1",
+      "provider": "gcp",
+      "displayName": "GCP A3 High (H100 x8)",
+      "gpuModel": "H100",
+      "gpuCount": 8,
+      "region": "us-central1",
+      "hourlyUsd": 89.6,
+      "fp16TflopsPerGpu": 1979,
+      "notes": "Approximate on-demand GPU+host blended rate."
+    },
+    {
+      "id": "gcp-a2-a100x8-us-central1",
+      "provider": "gcp",
+      "displayName": "GCP A2 Ultra (A100 x8)",
+      "gpuModel": "A100",
+      "gpuCount": 8,
+      "region": "us-central1",
+      "hourlyUsd": 29.4,
+      "fp16TflopsPerGpu": 312,
+      "notes": "Approximate on-demand GPU+host blended rate."
+    },
+    {
+      "id": "coreweave-h100x8-us-east",
+      "provider": "coreweave",
+      "displayName": "CoreWeave H100 x8",
+      "gpuModel": "H100",
+      "gpuCount": 8,
+      "region": "us-east",
+      "hourlyUsd": 79.2,
+      "fp16TflopsPerGpu": 1979,
+      "notes": "Marketplace-style estimate for reserved-like usage."
+    },
+    {
+      "id": "coreweave-a100x8-us-east",
+      "provider": "coreweave",
+      "displayName": "CoreWeave A100 x8",
+      "gpuModel": "A100",
+      "gpuCount": 8,
+      "region": "us-east",
+      "hourlyUsd": 24.8,
+      "fp16TflopsPerGpu": 312,
+      "notes": "Marketplace-style estimate for reserved-like usage."
+    },
+    {
+      "id": "runpod-h100x8-us-ks",
+      "provider": "runpod",
+      "displayName": "RunPod H100 x8",
+      "gpuModel": "H100",
+      "gpuCount": 8,
+      "region": "US-KS",
+      "hourlyUsd": 72.0,
+      "fp16TflopsPerGpu": 1979,
+      "notes": "Cloud pod listing average in top-availability regions."
+    },
+    {
+      "id": "runpod-a100x8-us-ks",
+      "provider": "runpod",
+      "displayName": "RunPod A100 x8",
+      "gpuModel": "A100",
+      "gpuCount": 8,
+      "region": "US-KS",
+      "hourlyUsd": 20.8,
+      "fp16TflopsPerGpu": 312,
+      "notes": "Cloud pod listing average in top-availability regions."
+    },
+    {
+      "id": "runpod-l40sx8-us-ks",
+      "provider": "runpod",
+      "displayName": "RunPod L40S x8",
+      "gpuModel": "L40S",
+      "gpuCount": 8,
+      "region": "US-KS",
+      "hourlyUsd": 12.8,
+      "fp16TflopsPerGpu": 181,
+      "notes": "Cost-oriented profile for smaller training jobs."
+    }
+  ]
+}

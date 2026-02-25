@@ -1,0 +1,9 @@
+{
+  "catalogVersion": "2026-02",
+  "currency": "USD",
+  "refreshedAt": "2026-02-24T00:00:00Z",
+  "sourceNotes": [
+    "Manually curated for MVP from public on-demand and marketplace list prices.",
+    "Prices are approximations and should be validated before purchase decisions."
+  ]
+}
