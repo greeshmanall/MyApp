@@ -8,6 +8,8 @@ describe("estimateTraining", () => {
     const medium = estimateTraining(SCENARIOS.medium);
     const frontier = estimateTraining(SCENARIOS.frontierish);
 
+    expect(small.totalFlops).toBeGreaterThan(0);
+    expect(small.gpuHoursRequired).toBeGreaterThan(0);
     expect(medium.totalFlops).toBeGreaterThan(small.totalFlops);
     expect(frontier.totalFlops).toBeGreaterThan(medium.totalFlops);
     expect(frontier.gpuHoursRequired).toBeGreaterThan(medium.gpuHoursRequired);

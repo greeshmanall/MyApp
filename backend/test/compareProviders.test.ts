@@ -34,6 +34,19 @@ describe("compareProviderCosts", () => {
     }
   });
 
+  it("returns positive cost outputs for valid workloads", () => {
+    const estimate = estimateTraining(SCENARIOS.small);
+    const recommendations = recommendHardwareProfiles(estimate, SCENARIOS.small.targetDays);
+    const rows = compareProviderCosts(estimate, SCENARIOS.small, recommendations);
+
+    expect(rows.length).toBeGreaterThan(0);
+    rows.forEach((row) => {
+      expect(row.hourlyUsd).toBeGreaterThan(0);
+      expect(row.totalUsd).toBeGreaterThan(0);
+      expect(row.effectiveUsdPerGpuHour).toBeGreaterThan(0);
+    });
+  });
+
   it("respects preferred region when matches exist", () => {
     const estimate = estimateTraining({ ...SCENARIOS.small, preferredRegion: "us-east-1" });
     const recommendations = recommendHardwareProfiles(estimate, SCENARIOS.small.targetDays);
