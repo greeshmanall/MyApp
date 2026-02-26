@@ -17,7 +17,7 @@ This is a self-contained Node.js monorepo (npm workspaces) with no databases, Do
 See `package.json` scripts. Summary:
 
 - **Dev**: `npm run dev` — starts backend (tsx watch) and frontend (vite) in parallel
-- **Test**: `npm run test` — runs Vitest suite in backend workspace (5 tests)
+- **Test**: `npm run test` — runs Vitest suite in backend workspace (6 tests across 2 files)
 - **Build**: `npm run build` — TypeScript compilation + Vite production build
 
 ### Non-obvious notes
