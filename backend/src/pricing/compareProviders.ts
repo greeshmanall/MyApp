@@ -4,50 +4,52 @@ import type {
   TrainingEstimate,
   TrainingWorkloadInput
 } from "../../../shared/types.js";
-import { estimateDaysForProfile } from "../recommendation/hardwareProfiles.js";
+import {
+  estimateDaysForGpuCount,
+  gpuCountForTargetDays
+} from "../recommendation/hardwareProfiles.js";
 import { loadCatalogSkus } from "./catalog.js";
 
 export function compareProviderCosts(
   estimate: TrainingEstimate,
   workload: TrainingWorkloadInput,
-  recommendations: HardwareRecommendation[]
+  _recommendations: HardwareRecommendation[]
 ): ProviderCostBreakdown[] {
   const skus = loadCatalogSkus();
 
-  const preferred = recommendations[0];
-  const filteredByModel = skus.filter((sku) => sku.gpuModel === preferred.gpuModel);
-  const candidateSkus = filteredByModel.length > 0 ? filteredByModel : skus;
-
   const withRegionPreference = workload.preferredRegion
-    ? candidateSkus.filter((sku) => sku.region === workload.preferredRegion)
-    : candidateSkus;
-
-  const finalCandidates = withRegionPreference.length > 0 ? withRegionPreference : candidateSkus;
+    ? skus.filter((sku) => sku.region === workload.preferredRegion)
+    : skus;
+  const finalCandidates = withRegionPreference.length > 0 ? withRegionPreference : skus;
 
   return finalCandidates
     .map((sku) => {
-      const runtimeDays = estimateDaysForProfile(estimate, {
-        profileId: `${sku.gpuModel.toLowerCase()}x${sku.gpuCount}`,
-        title: sku.displayName,
-        gpuModel: sku.gpuModel,
-        gpuCount: sku.gpuCount,
-        fp16TflopsPerGpu: sku.fp16TflopsPerGpu,
-        tradeoff: "balanced"
-      });
+      const requiredGpus = gpuCountForTargetDays(
+        estimate,
+        sku.fp16TflopsPerGpu,
+        workload.targetDays
+      );
+      const nodesNeeded = Math.ceil(requiredGpus / sku.gpuCount);
+      const actualGpus = nodesNeeded * sku.gpuCount;
 
+      const runtimeDays = estimateDaysForGpuCount(
+        estimate,
+        actualGpus,
+        sku.fp16TflopsPerGpu
+      );
       const totalHours = runtimeDays * 24;
-      const totalUsd = totalHours * sku.hourlyUsd;
+      const totalUsd = totalHours * nodesNeeded * sku.hourlyUsd;
 
       return {
         provider: sku.provider,
         skuId: sku.id,
         region: sku.region,
         gpuModel: sku.gpuModel,
-        gpuCount: sku.gpuCount,
-        hourlyUsd: sku.hourlyUsd,
+        gpuCount: actualGpus,
+        hourlyUsd: sku.hourlyUsd * nodesNeeded,
         estimatedDays: runtimeDays,
         totalUsd,
-        effectiveUsdPerGpuHour: sku.hourlyUsd / sku.gpuCount,
+        effectiveUsdPerGpuHour: totalUsd / (totalHours * actualGpus),
         assumptions: [
           `Utilization set to ${(workload.utilization * 100).toFixed(0)}%.`,
           "Includes compute hourly pricing only."

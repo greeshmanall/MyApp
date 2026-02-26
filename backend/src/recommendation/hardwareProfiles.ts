@@ -1,70 +1,69 @@
 import type { HardwareRecommendation, TrainingEstimate } from "../../../shared/types.js";
 
-interface HardwareProfile {
-  profileId: string;
-  title: string;
+const GPU_INCREMENT = 8;
+
+interface GpuType {
   gpuModel: string;
-  gpuCount: number;
   fp16TflopsPerGpu: number;
   tradeoff: HardwareRecommendation["tradeoff"];
 }
 
-const PROFILES: HardwareProfile[] = [
-  {
-    profileId: "h100x64",
-    title: "64x H100 cluster",
-    gpuModel: "H100",
-    gpuCount: 64,
-    fp16TflopsPerGpu: 1979,
-    tradeoff: "speed_optimized"
-  },
-  {
-    profileId: "a100x64",
-    title: "64x A100 cluster",
-    gpuModel: "A100",
-    gpuCount: 64,
-    fp16TflopsPerGpu: 312,
-    tradeoff: "balanced"
-  },
-  {
-    profileId: "l40sx64",
-    title: "64x L40S cluster",
-    gpuModel: "L40S",
-    gpuCount: 64,
-    fp16TflopsPerGpu: 181,
-    tradeoff: "cost_optimized"
-  }
+const GPU_TYPES: GpuType[] = [
+  { gpuModel: "B200", fp16TflopsPerGpu: 4500, tradeoff: "speed_optimized" },
+  { gpuModel: "H100", fp16TflopsPerGpu: 1979, tradeoff: "speed_optimized" },
+  { gpuModel: "A100", fp16TflopsPerGpu: 312, tradeoff: "balanced" },
+  { gpuModel: "L40S", fp16TflopsPerGpu: 181, tradeoff: "cost_optimized" }
 ];
 
-export function estimateDaysForProfile(estimate: TrainingEstimate, profile: HardwareProfile): number {
-  const petaFlopsPerHourPerGpu = profile.fp16TflopsPerGpu / 1000;
-  const petaFlopsPerHour = petaFlopsPerHourPerGpu * profile.gpuCount;
-  const totalPfNeeded = estimate.totalFlops / 1e15;
+function roundUpToIncrement(n: number, increment: number): number {
+  return Math.max(increment, Math.ceil(n / increment) * increment);
+}
 
-  return totalPfNeeded / (petaFlopsPerHour * 24);
+export function gpuCountForTargetDays(
+  estimate: TrainingEstimate,
+  fp16TflopsPerGpu: number,
+  targetDays: number
+): number {
+  const totalPfNeeded = estimate.totalFlops / 1e15;
+  const pfPerHourPerGpu = fp16TflopsPerGpu / 1000;
+  const utilization = estimate.utilization ?? 1;
+  const rawGpus = totalPfNeeded / (targetDays * 24 * pfPerHourPerGpu * utilization);
+  return roundUpToIncrement(rawGpus, GPU_INCREMENT);
+}
+
+export function estimateDaysForGpuCount(
+  estimate: TrainingEstimate,
+  gpuCount: number,
+  fp16TflopsPerGpu: number
+): number {
+  const totalPfNeeded = estimate.totalFlops / 1e15;
+  const pfPerHour = (fp16TflopsPerGpu / 1000) * gpuCount;
+  const utilization = estimate.utilization ?? 1;
+  return totalPfNeeded / (pfPerHour * 24 * utilization);
 }
 
 export function recommendHardwareProfiles(
   estimate: TrainingEstimate,
   targetDays: number
 ): HardwareRecommendation[] {
-  return PROFILES.map((profile) => {
-    const estimatedDays = estimateDaysForProfile(estimate, profile);
+  return GPU_TYPES.map((gpu) => {
+    const gpuCount = gpuCountForTargetDays(estimate, gpu.fp16TflopsPerGpu, targetDays);
+    const estimatedDays = estimateDaysForGpuCount(estimate, gpuCount, gpu.fp16TflopsPerGpu);
     const delta = estimatedDays - targetDays;
 
     const rationale =
       delta <= 0
         ? `Meets target timeline with ~${Math.abs(delta).toFixed(1)} days of buffer.`
-        : `Misses target by ~${delta.toFixed(1)} days unless throughput optimization is improved.`;
+        : `Slightly over target by ~${delta.toFixed(1)} days (GPU count rounded to ${GPU_INCREMENT}s).`;
 
     return {
-      profileId: profile.profileId,
-      title: profile.title,
-      gpuModel: profile.gpuModel,
-      gpuCount: profile.gpuCount,
+      profileId: `${gpu.gpuModel.toLowerCase()}x${gpuCount}`,
+      title: `${gpuCount}x ${gpu.gpuModel} cluster`,
+      gpuModel: gpu.gpuModel,
+      gpuCount,
       estimatedDays,
       rationale,
-      tradeoff: profile.tradeoff
+      tradeoff: gpu.tradeoff
     };
-  }).sort((a, b) => a.estimatedDays - b.estimatedDays);
+  }).sort((a, b) => a.gpuCount - b.gpuCount);
 }

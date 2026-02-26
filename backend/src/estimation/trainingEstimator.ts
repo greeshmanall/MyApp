@@ -9,12 +9,14 @@ export function estimateTraining(input: TrainingWorkloadInput): TrainingEstimate
   const normalizedPfPerDay = effectivePfPerDayTarget / input.utilization;
 
   // Convert petaFLOP-days into equivalent GPU-hours using an A100 baseline proxy.
+  // Scale by 1/utilization so lower utilization requires more effective GPU-hours.
   const a100PfPerHour = (312 * 1e12) / PFLOP_TO_FLOP;
-  const gpuHoursRequired = (totalFlops / PFLOP_TO_FLOP) / a100PfPerHour;
+  const gpuHoursRequired = (totalFlops / PFLOP_TO_FLOP) / a100PfPerHour / input.utilization;
 
   return {
     totalFlops,
     gpuHoursRequired,
-    effectivePfDays: normalizedPfPerDay
+    effectivePfDays: normalizedPfPerDay,
+    utilization: input.utilization
   };
 }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AssumptionsSummary } from "./components/AssumptionsSummary";
 import { ResultsPanel } from "./components/ResultsPanel";
 import { WorkloadForm } from "./components/WorkloadForm";
-const API_BASE = "http://localhost:4000";
+const API_BASE = "";
 const App = () => {
     const [result, setResult] = useState(null);
     const [previousResult, setPreviousResult] = useState(null);
@@ -35,6 +35,6 @@ const App = () => {
             setLoading(false);
         }
     };
-    return (_jsxs("div", { className: "container", children: [_jsx("h1", { children: "LLM Compute Planner" }), _jsx("p", { children: "Estimate training capacity, hardware choices, and provider cost in one pass." }), _jsxs("div", { className: "grid", children: [_jsx(WorkloadForm, { onSubmit: runEstimate, loading: loading }), _jsxs("div", { children: [error && (_jsxs("div", { className: "card", children: [_jsx("strong", { children: "Request failed:" }), " ", error] })), _jsx(AssumptionsSummary, { result: result, previousResult: previousResult })] })] }), _jsx(ResultsPanel, { result: result })] }));
+    return (_jsxs("div", { className: "container", children: [_jsx("h1", { children: "Training Compute Planner" }), _jsx("p", { children: "Estimate training capacity, hardware choices, and provider cost in one pass." }), _jsxs("div", { className: "grid", children: [_jsx(WorkloadForm, { onSubmit: runEstimate, loading: loading }), _jsxs("div", { children: [error && (_jsxs("div", { className: "card", children: [_jsx("strong", { children: "Request failed:" }), " ", error] })), _jsx(AssumptionsSummary, { result: result, previousResult: previousResult })] })] }), _jsx(ResultsPanel, { result: result })] }));
 };
 export default App;

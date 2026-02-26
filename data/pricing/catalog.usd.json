@@ -1,6 +1,17 @@
 {
   "skus": [
     {
+      "id": "aws-p6-b200x8-us-east-1",
+      "provider": "aws",
+      "displayName": "AWS p6-b200 (B200 x8)",
+      "gpuModel": "B200",
+      "gpuCount": 8,
+      "region": "us-east-1",
+      "hourlyUsd": 132.0,
+      "fp16TflopsPerGpu": 4500,
+      "notes": "Approximate Blackwell-generation reference for early availability."
+    },
+    {
       "id": "aws-p5-h100x8-us-east-1",
       "provider": "aws",
       "displayName": "AWS p5.48xlarge (H100 x8)",
@@ -21,6 +32,17 @@
       "hourlyUsd": 32.77,
       "fp16TflopsPerGpu": 312,
       "notes": "On-demand reference for p4d family."
+    },
+    {
+      "id": "gcp-a4-b200x8-us-central1",
+      "provider": "gcp",
+      "displayName": "GCP A4 (B200 x8)",
+      "gpuModel": "B200",
+      "gpuCount": 8,
+      "region": "us-central1",
+      "hourlyUsd": 124.8,
+      "fp16TflopsPerGpu": 4500,
+      "notes": "Approximate Blackwell-generation blended on-demand rate."
     },
     {
       "id": "gcp-a3-h100x8-us-central1",
@@ -45,6 +67,17 @@
       "notes": "Approximate on-demand GPU+host blended rate."
     },
     {
+      "id": "coreweave-b200x8-us-east",
+      "provider": "coreweave",
+      "displayName": "CoreWeave B200 x8",
+      "gpuModel": "B200",
+      "gpuCount": 8,
+      "region": "us-east",
+      "hourlyUsd": 118.4,
+      "fp16TflopsPerGpu": 4500,
+      "notes": "Marketplace-style estimate for Blackwell clusters."
+    },
+    {
       "id": "coreweave-h100x8-us-east",
       "provider": "coreweave",
       "displayName": "CoreWeave H100 x8",
@@ -65,6 +98,17 @@
       "hourlyUsd": 24.8,
       "fp16TflopsPerGpu": 312,
       "notes": "Marketplace-style estimate for reserved-like usage."
+    },
+    {
+      "id": "runpod-b200x8-us-ks",
+      "provider": "runpod",
+      "displayName": "RunPod B200 x8",
+      "gpuModel": "B200",
+      "gpuCount": 8,
+      "region": "US-KS",
+      "hourlyUsd": 112.0,
+      "fp16TflopsPerGpu": 4500,
+      "notes": "Cloud pod listing average for Blackwell availability."
     },
     {
       "id": "runpod-h100x8-us-ks",

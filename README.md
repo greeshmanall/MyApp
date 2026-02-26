@@ -36,3 +36,7 @@ Web MVP for researchers to estimate training compute capacity, pick hardware pro
 ## Pricing updates
 
 Use the monthly process in `docs/pricing-update-playbook.md`.
+
+## Handover documentation
+
+For onboarding a new engineer, start with `docs/engineer-handover.md`.

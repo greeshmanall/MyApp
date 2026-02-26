@@ -12,6 +12,7 @@ export interface TrainingEstimate {
   totalFlops: number;
   gpuHoursRequired: number;
   effectivePfDays: number;
+  utilization: number;
 }
 
 export interface GpuSku {

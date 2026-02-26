@@ -42,7 +42,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>LLM Compute Planner</h1>
+      <h1>Training Compute Planner</h1>
       <p>Estimate training capacity, hardware choices, and provider cost in one pass.</p>
 
       <div className="grid">
