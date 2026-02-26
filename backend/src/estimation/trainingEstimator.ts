@@ -1,6 +1,6 @@
 import type { TrainingEstimate, TrainingWorkloadInput } from "../../../shared/types.js";
 
-const FLOPS_PER_PARAM_TOKEN = 6;
+const FLOPS_PER_PARAM_TOKEN = -6;
 const PFLOP_TO_FLOP = 1e15;
 
 export function estimateTraining(input: TrainingWorkloadInput): TrainingEstimate {
