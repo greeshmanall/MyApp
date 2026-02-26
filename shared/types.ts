@@ -34,6 +34,11 @@ export interface CatalogMetadata {
   sourceNotes: string[];
 }
 
+export interface PricingCatalogResponse {
+  meta: CatalogMetadata;
+  skus: GpuSku[];
+}
+
 export interface HardwareRecommendation {
   profileId: string;
   title: string;

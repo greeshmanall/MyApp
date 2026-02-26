@@ -4,6 +4,7 @@ import { z } from "zod";
 import { compareProviderCosts } from "./pricing/compareProviders.js";
 import { estimateTraining } from "./estimation/trainingEstimator.js";
 import { recommendHardwareProfiles } from "./recommendation/hardwareProfiles.js";
+import { loadCatalogSkus } from "./pricing/catalog.js";
 import catalogMeta from "../../data/pricing/catalog.meta.json";
 import type { TrainingWorkloadInput } from "../../shared/types.js";
 
@@ -27,6 +28,13 @@ app.get("/health", (_req, res) => {
 
 app.get("/api/catalog/meta", (_req, res) => {
   res.json(catalogMeta);
+});
+
+app.get("/api/catalog", (_req, res) => {
+  res.json({
+    meta: catalogMeta,
+    skus: loadCatalogSkus()
+  });
 });
 
 app.post("/api/estimate", async (req, res) => {

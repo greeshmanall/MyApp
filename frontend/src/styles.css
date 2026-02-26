@@ -18,6 +18,37 @@ body {
   padding: 2rem 1rem 4rem;
 }
 
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-button {
+  width: auto;
+  margin: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.nav-button.active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -41,6 +72,7 @@ td {
   text-align: left;
   padding: 0.5rem;
   border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
 }
 
 input,
@@ -54,4 +86,24 @@ button {
 
 button {
   cursor: pointer;
+}
+
+.pricing-card {
+  margin-top: 1rem;
+}
+
+.source-notes {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1.1rem;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+@media (max-width: 760px) {
+  .app-header {
+    flex-direction: column;
+  }
 }
